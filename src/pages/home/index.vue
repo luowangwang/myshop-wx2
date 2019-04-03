@@ -19,6 +19,27 @@
                 <img :src="item.image_src">
             </div>
         </div>
+        <!-- 商品列表 -->
+        <div class="floor" :key='index' v-for='(item, index) in floor'>
+          <!-- 楼层头部 -->
+          <div class="floor-title">
+            <img :src="item.floor_title.image_src" alt="" mode='aspectFill'>
+          </div>
+          <!-- 楼层主体部分 -->
+          <div class="floor-content">
+            <div class="left">
+              <img :src="item.product_list[0].image_src" alt="" mode='aspectFill'>
+            </div>
+            <div class="right">
+              <img v-if='i > 0' :key='i' v-for='(img, i) in item.product_list' :src="img.image_src" alt="" mode='aspectFill'>
+            </div>
+          </div>
+        </div>
+        <!-- 回到顶部 -->
+        <div class="toTop" v-if='isShow' @click="toTop">
+          ︿
+          <p>顶部</p>
+        </div>
     </div>
 </template>
 <script>
@@ -27,7 +48,9 @@ export default {
   data () {
     return {
       imgUrls: [],
-      menuImageData: []
+      menuImageData: [],
+      floor: [],
+      isShow: false
     }
   },
   methods: {
@@ -89,11 +112,27 @@ export default {
       // // let {message} = res.data
       // this.menuImageData = res.data.message
       this.menuImageData = await this.queryData('home/catitems')
+    },
+    // 获取楼层数据
+    async floorData () {
+      this.floor = await this.queryData('home/floordata')
+    },
+    // 回到顶部
+    toTop () {
+      mpvue.pageScrollTo({
+        scrollTop: 0
+      })
     }
   },
   mounted () {
     this.swiperData()
     this.menuData()
+    this.floorData()
+  },
+  onPageScroll (event) {
+    // console.log(123)
+    // console.log(event.scrollTop)
+    this.isShow = event.scrollTop > 50
   }
 }
 </script>
@@ -120,5 +159,63 @@ export default {
     width: 128rpx;
     height: 140rpx;
 }
+.floor{
+    margin-top:20rpx;
+  }
+
+  .floor-title{
+    width:100%;
+  }
+
+  .floor-title img{
+    width:100%;
+    height:60rpx;
+    display: block;
+  }
+
+  .floor-content{
+    display: flex;
+    justify-content: space-between;
+    width:100%;
+    padding:20rpx;
+    box-sizing: border-box;
+  }
+
+  .floor-content .left img{
+    width:220rpx;
+    height:385rpx;
+    border-radius:4px;
+  }
+
+  .floor-content .right {
+    flex:1;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    margin-left:14rpx;
+  }
+
+  .floor-content .right img{
+    width:232rpx;
+    height:188rpx;
+    border-radius:4px;
+  }
+  .toTop{
+    width:100rpx;
+    height:100rpx;
+    border-radius: 50%;
+    background:rgba(255,255,255,0.8);
+    position: fixed;
+    right:40rpx;
+    bottom:40rpx;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .toTop p{
+    font-size:14px;
+  }
+  
 </style>
 
