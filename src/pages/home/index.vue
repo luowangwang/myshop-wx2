@@ -22,6 +22,7 @@
     </div>
 </template>
 <script>
+import request from '../../utils/request.js'
 export default {
   data () {
     return {
@@ -30,28 +31,64 @@ export default {
     }
   },
   methods: {
+    // 提取请求封装函数
+    async queryData (path) {
+      let res = await request(path)
+      return res.data.message
+    },
     //   获取轮播图数据
-    swiperData () {
-      let that = this
-      mpvue.request({
-        url: 'https://www.zhengzhicheng.cn/api/public/v1/home/swiperdata',
-        success: function (res) {
-          let {message} = res.data
-          that.imgUrls = message
-        }
-      })
+    async swiperData () {
+    // 方法一
+    //   let that = this
+    //   mpvue.request({
+    //     url: 'https://www.zhengzhicheng.cn/api/public/v1/home/swiperdata',
+    //     success: function (res) {
+    //       let {message} = res.data
+    //       that.imgUrls = message
+    //     }
+    //   })
+
+    // 方法二
+    //   let url = 'https://www.zhengzhicheng.cn/api/public/v1/home/swiperdata'
+    //   request(url, 'get', {}, {}, () => {
+    //     console.log(1)
+    //   })
+
+    // 方法三
+    //   let url = 'https://www.zhengzhicheng.cn/api/public/v1/home/swiperdata'
+    //   request(url).then(res => {
+    //     console.log(res)
+    //   })
+
+    // 方法四
+    // let url = 'https://www.zhengzhicheng.cn/api/public/v1/home/swiperdata'
+    // let res = await request(url)
+    // let {message} = res.data
+    // console.log(message)
+
+    // 方法五
+    // let res = await request('home/swiperdata')
+    // // let {message} = res.data
+    // // console.log(message)
+    // this.imgUrls = res.data.message
+
+    // 方法六
+      this.imgUrls = await this.queryData('home/swiperdata')
     },
     // 获取菜单栏数据
-    menuData () {
-      let that = this
-      mpvue.request({
-        url: 'https://www.zhengzhicheng.cn/api/public/v1/home/catitems',
-        success: function (res) {
-        //   console.log(res)
-          let {message} = res.data
-          that.menuImageData = message
-        }
-      })
+    async menuData () {
+      // let that = this
+      // mpvue.request({
+      //   url: 'https://www.zhengzhicheng.cn/api/public/v1/home/catitems',
+      //   success: function (res) {
+      //     let {message} = res.data
+      //     that.menuImageData = message
+      //   }
+      // })
+      // let res = await request('home/catitems')
+      // // let {message} = res.data
+      // this.menuImageData = res.data.message
+      this.menuImageData = await this.queryData('home/catitems')
     }
   },
   mounted () {
