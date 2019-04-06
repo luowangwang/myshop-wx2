@@ -1,12 +1,7 @@
 <template>
     <div>
         <!-- 搜索框 -->
-        <div class="search-bar">
-            <div class="search-input">
-                <!-- <icon type="search" color="#999" class="seacrh-icon" size="18px"/> -->
-                <input type="text" placeholder="搜索">
-            </div>
-        </div>
+        <search-bar></search-bar>
         <!-- 轮播图 -->
         <swiper indicator-dots autoplay>
             <swiper-item :key="item.goods_id" v-for="item in imgUrls">
@@ -44,6 +39,7 @@
 </template>
 <script>
 import request from '../../utils/request.js'
+import searchBar from '../../components/searchBar'
 export default {
   data () {
     return {
@@ -128,6 +124,9 @@ export default {
       this.menuImageData = await this.queryData('home/catitems')
       this.floor = await this.queryData('home/floordata')
     }
+  },
+  components: {
+    'search-bar': searchBar
   },
   mounted () {
     // this.swiperData()
