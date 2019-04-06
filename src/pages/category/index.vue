@@ -4,7 +4,11 @@
         <search-bar></search-bar>
         <!-- 菜单和内容 -->
         <div class="content">
-            <div class="left"></div>
+            <div class="left">
+                <div :class="{active: currentIndex === index}" class="menu-item" :key="index" v-for="(item, index) in cate">
+                    {{item.cat_name}}
+                </div>
+            </div>
             <div class="right"></div>
         </div>
     </div>
@@ -15,14 +19,14 @@ import request from '../../utils/request'
 export default {
   data () {
     return {
-      cate: []
+      cate: [],
+      currentIndex: 0
     }
   },
   methods: {
     async cateData () {
       let ret = await request('categories')
       this.cate = ret.data.message
-      console.log(ret)
     }
   },
   mounted () {
