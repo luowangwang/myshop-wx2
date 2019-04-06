@@ -122,17 +122,33 @@ export default {
       mpvue.pageScrollTo({
         scrollTop: 0
       })
+    },
+    async initData () {
+      this.imgUrls = await this.queryData('home/swiperdata')
+      this.menuImageData = await this.queryData('home/catitems')
+      this.floor = await this.queryData('home/floordata')
     }
   },
   mounted () {
-    this.swiperData()
-    this.menuData()
-    this.floorData()
+    // this.swiperData()
+    // this.menuData()
+    // this.floorData()
+    this.initData()
   },
+  // 页面滚动
   onPageScroll (event) {
     // console.log(123)
     // console.log(event.scrollTop)
     this.isShow = event.scrollTop > 50
+  },
+  // 下拉刷新
+  onPullDownRefresh () {
+    // console.log(123)
+    // 下拉刷新 重新加载页面数据
+    // this.swiperData()
+    // this.menuData()
+    // this.floorData()
+    this.initData()
   }
 }
 </script>
