@@ -49,7 +49,7 @@ export default {
     await this.cateData()
     // 根据当前索引取出对应的右侧数据
     this.rightData = this.cate[this.currentIndex].children
-    console.log(this.rightData)
+    // console.log(this.rightData)
   },
   components: {
     'search-bar': searchBar
