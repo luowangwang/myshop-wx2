@@ -23,17 +23,30 @@ export default {
   data () {
     return {
       keywords: '',
-      searchResult: []
+      searchResult: [],
+      isLoading: false,
+      timer: null
     }
   },
   methods: {
     // 根据输入关键字查询匹配得数据
     async inputHandle () {
-      let res = await request('goods/qsearch', 'get', {
-        query: this.keywords
-      })
-      const {message} = res.data
-      this.searchResult = message
+    // 控制请求得频率  输入多个字符但是只发送一个请求
+    //   控制是否发送请求
+      if (this.isLoading) {
+        return
+      }
+      this.isLoading = true
+      this.timer = setTimeout(async () => {
+        clearTimeout(this.timer)
+        let res = await request('goods/qsearch', 'get', {
+          query: this.keywords
+        })
+        const {message} = res.data
+        this.searchResult = message
+        //   重新打开开关
+        this.isLoading = false
+      }, 1000)
     }
   }
 }
