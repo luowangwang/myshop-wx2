@@ -5,7 +5,7 @@
         <!-- 菜单和内容 -->
         <div class="content">
             <div class="left">
-                <div :class="{active: currentIndex === index}" class="menu-item" :key="index" v-for="(item, index) in cate">
+                <div @click="changeBrand(index)" :class="{active: currentIndex === index}" class="menu-item" :key="index" v-for="(item, index) in cate">
                     {{item.cat_name}}
                 </div>
             </div>
@@ -38,6 +38,11 @@ export default {
     async cateData () {
       let ret = await request('categories')
       this.cate = ret.data.message
+    },
+    changeBrand (i) {
+    //   console.log(i)
+      this.currentIndex = i
+      this.rightData = this.cate[this.currentIndex].children
     }
   },
   async mounted () {
